@@ -1,4 +1,4 @@
-FROM cheneyyan/stroke-width-transform
+FROM fsyanyong/stroke-width-transform
 
 # since we are gonna install open-ocr, we need all the tesseract / leptonica deps
 RUN apt-get install -y \

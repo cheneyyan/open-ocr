@@ -29,6 +29,6 @@ libopencv-contrib-dev \
 libopencv-highgui2.4 \
 libopencv-highgui-dev
 
-RUN cd /opt && git clone https://github.com/tleyden/DetectText.git
-RUN cd /opt/DetectText && g++ -o DetectText TextDetection.cpp FeaturesMain.cpp -lopencv_core -lopencv_highgui -lopencv_imgproc -I/opt/DetectText
-RUN cd /opt/DetectText && cp DetectText /usr/local/bin
+RUN cd /opt && git clone https://github.com/tleyden/DetectText.git && \
+cd /opt/DetectText && g++ -o DetectText TextDetection.cpp FeaturesMain.cpp -lopencv_core -lopencv_highgui -lopencv_imgproc -I/opt/DetectText && \
+cd /opt/DetectText && cp DetectText /usr/local/bin
