@@ -15,11 +15,8 @@ tesseract-ocr-eng \
 tesseract-ocr-chi-sim \
 tesseract-ocr-chi-tra 
 
-# In theory, should be able to set export TESSDATA_PREFIX=/usr/share/tesseract-ocr/, 
-# but when I tried I still got error: Error opening data file /usr/local/share/tessdata/eng.traineddata
-# Workaround: just copy the data to where it expects
-RUN mkdir -p /usr/local/share/tessdata/ && \
-cp -R /usr/share/tesseract-ocr/tessdata/* /usr/local/share/tessdata/
+RUN ln -s /usr/lib/go-1.10/bin/go /usr/bin/go
+#ln -s /usr/share/tesseract-ocr/tessdata /usr/local/share/tessdata
 
 ENV GOPATH /opt/go
 

@@ -35,11 +35,11 @@ func NewTesseractEngineArgs(ocrRequest OcrRequest) (*TesseractEngineArgs, error)
 	// version
 	version := ocrRequest.EngineArgs["version"]
 	if version != nil {
-		versionInt, ok := version.(int)
+		versionFloat, ok := version.(float64)
 		if !ok {
-			return nil, fmt.Errorf("Could not convert version into int: %v", version)
+			return nil, fmt.Errorf("Could not convert version into float64: %v", version)
 		}
-		engineArgs.version = versionInt
+		engineArgs.version = int(versionFloat)
 	}
 
 	// config vars

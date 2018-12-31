@@ -2,11 +2,13 @@ FROM fsyanyong/stroke-width-transform
 
 # since we are gonna install open-ocr, we need all the tesseract / leptonica deps
 RUN apt-get install -y \
-golang \
+golang-1.10 \
 libleptonica-dev \
 libtesseract3 \
 libtesseract-dev \
 tesseract-ocr-eng
+
+RUN ln -s /usr/lib/go-1.10/bin/go /usr/bin/go
 
 ENV GOPATH /opt/go
 
