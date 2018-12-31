@@ -15,12 +15,13 @@ type TesseractEngine struct {
 }
 
 type TesseractEngineArgs struct {
-	configVars  map[string]string   `json:"config_vars"`
+	version       int               `json:"version"`
 	pageSegMode   string            `json:"psm"`
 	ocrEngineMode string            `json:"oem"`
 	lang          string            `json:"lang"`
 	tessdataDir   string            `json:"tessdata-dir"`
 	userWords     string            `json:"user-words"`
+	configVars  map[string]string   `json:"config_vars"`
 }
 
 func NewTesseractEngineArgs(ocrRequest OcrRequest) (*TesseractEngineArgs, error) {
@@ -29,6 +30,16 @@ func NewTesseractEngineArgs(ocrRequest OcrRequest) (*TesseractEngineArgs, error)
 
 	if ocrRequest.EngineArgs == nil {
 		return engineArgs, nil
+	}
+
+	// version
+	version := ocrRequest.EngineArgs["version"]
+	if version != nil {
+		versionInt, ok := version.(int)
+		if !ok {
+			return nil, fmt.Errorf("Could not convert version into int: %v", version)
+		}
+		engineArgs.version = versionInt
 	}
 
 	// config vars
@@ -50,7 +61,6 @@ func NewTesseractEngineArgs(ocrRequest OcrRequest) (*TesseractEngineArgs, error)
 		}
 
 		engineArgs.configVars = configVarsMap
-
 	}
 
 	// page seg mode
@@ -117,10 +127,14 @@ func (t TesseractEngineArgs) Export() []string {
 		result = append(result, keyValArg)
 	}
 	if t.pageSegMode != "" {
-		result = append(result, "--psm")
+		if (t.version >= 4) {
+			result = append(result, "--psm")
+		} else {
+			result = append(result, "-psm")
+		}
 		result = append(result, t.pageSegMode)
 	}
-	if t.ocrEngineMode != "" {
+	if t.version >= 4 && t.ocrEngineMode != "" {
 		result = append(result, "--oem")
 		result = append(result, t.ocrEngineMode)
 	}
@@ -132,7 +146,7 @@ func (t TesseractEngineArgs) Export() []string {
 		result = append(result, "--tessdata-dir")
 		result = append(result, t.tessdataDir)
 	}
-	if t.userWords != "" {
+	if t.version >= 4 && t.userWords != "" {
 		result = append(result, "--user-words")
 		result = append(result, t.userWords)
 	}
