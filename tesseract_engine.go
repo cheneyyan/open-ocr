@@ -15,9 +15,12 @@ type TesseractEngine struct {
 }
 
 type TesseractEngineArgs struct {
-	configVars  map[string]string `json:"config_vars"`
-	pageSegMode string            `json:"psm"`
-	lang        string            `json:"lang"`
+	configVars  map[string]string   `json:"config_vars"`
+	pageSegMode   string            `json:"psm"`
+	ocrEngineMode string            `json:"oem"`
+	lang          string            `json:"lang"`
+	tessdataDir   string            `json:"tessdata-dir"`
+	userWords     string            `json:"user-words"`
 }
 
 func NewTesseractEngineArgs(ocrRequest OcrRequest) (*TesseractEngineArgs, error) {
@@ -60,6 +63,16 @@ func NewTesseractEngineArgs(ocrRequest OcrRequest) (*TesseractEngineArgs, error)
 		engineArgs.pageSegMode = pageSegModeStr
 	}
 
+	// OCR engine mode
+	ocrEngineMode := ocrRequest.EngineArgs["oem"]
+	if ocrEngineMode != nil {
+		ocrEngineModeStr, ok := ocrEngineMode.(string)
+		if !ok {
+			return nil, fmt.Errorf("Could not convert oem into string: %v", ocrEngineMode)
+		}
+		engineArgs.ocrEngineMode = ocrEngineModeStr
+	}
+
 	// language
 	lang := ocrRequest.EngineArgs["lang"]
 	if lang != nil {
@@ -68,6 +81,26 @@ func NewTesseractEngineArgs(ocrRequest OcrRequest) (*TesseractEngineArgs, error)
 			return nil, fmt.Errorf("Could not convert lang into string: %v", lang)
 		}
 		engineArgs.lang = langStr
+	}
+
+	// tess data dir
+	tessdataDir := ocrRequest.EngineArgs["tessdata-dir"]
+	if tessdataDir != nil {
+		tessdataDirStr, ok := tessdataDir.(string)
+		if !ok {
+			return nil, fmt.Errorf("Could not convert tess data dir into string: %v", tessdataDir)
+		}
+		engineArgs.tessdataDir = tessdataDirStr
+	}
+
+	// user words
+	userWords := ocrRequest.EngineArgs["user-words"]
+	if userWords != nil {
+		userWordsStr, ok := userWords.(string)
+		if !ok {
+			return nil, fmt.Errorf("Could not convert user words into string: %v", userWords)
+		}
+		engineArgs.userWords = userWordsStr
 	}
 
 	return engineArgs, nil
@@ -84,12 +117,24 @@ func (t TesseractEngineArgs) Export() []string {
 		result = append(result, keyValArg)
 	}
 	if t.pageSegMode != "" {
-		result = append(result, "-psm")
+		result = append(result, "--psm")
 		result = append(result, t.pageSegMode)
+	}
+	if t.ocrEngineMode != "" {
+		result = append(result, "--oem")
+		result = append(result, t.ocrEngineMode)
 	}
 	if t.lang != "" {
 		result = append(result, "-l")
 		result = append(result, t.lang)
+	}
+	if t.tessdataDir != "" {
+		result = append(result, "--tessdata-dir")
+		result = append(result, t.tessdataDir)
+	}
+	if t.userWords != "" {
+		result = append(result, "--user-words")
+		result = append(result, t.userWords)
 	}
 
 	return result
