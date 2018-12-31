@@ -66,10 +66,10 @@ cleanImage()
 cleanContainer
 
 # put a space as we open-ocr and open-ocr-2 will match on open-ocr grep
-checkAndCleanImage "tleyden5iwx/open-ocr "
-checkAndCleanImage "tleyden5iwx/open-ocr-2 "
-checkAndCleanImage "tleyden5iwx/rabbitmq"
-checkAndCleanImage "tleyden5iwx/open-ocr-preprocessor"
+checkAndCleanImage "fsyanyong/open-ocr "
+checkAndCleanImage "fsyanyong/open-ocr-2 "
+checkAndCleanImage "fsyanyong/stroke-width-transform"
+checkAndCleanImage "fsyanyong/open-ocr-preprocessor"
 
 echo
 echo "Which version of the OCR do you want to deploy: "
@@ -110,4 +110,4 @@ fi
 
 export OPEN_OCR_INSTANCE=$OPEN_OCR_INSTANCE_NAME
 
-sudo -E docker-compose up $DEAMON_OPTION
+docker-compose up $DEAMON_OPTION
