@@ -127,14 +127,14 @@ func (t TesseractEngineArgs) Export() []string {
 		result = append(result, keyValArg)
 	}
 	if t.pageSegMode != "" {
-		if (t.version >= 4) {
+		if (t.version != 3) {
 			result = append(result, "--psm")
 		} else {
 			result = append(result, "-psm")
 		}
 		result = append(result, t.pageSegMode)
 	}
-	if t.version >= 4 && t.ocrEngineMode != "" {
+	if t.version != 3 && t.ocrEngineMode != "" {
 		result = append(result, "--oem")
 		result = append(result, t.ocrEngineMode)
 	}
@@ -146,7 +146,7 @@ func (t TesseractEngineArgs) Export() []string {
 		result = append(result, "--tessdata-dir")
 		result = append(result, t.tessdataDir)
 	}
-	if t.version >= 4 && t.userWords != "" {
+	if t.version != 3 && t.userWords != "" {
 		result = append(result, "--user-words")
 		result = append(result, t.userWords)
 	}
