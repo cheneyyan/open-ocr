@@ -23,7 +23,7 @@ services:
 
   # Start OCR worker
   openocrworker:
-    image: fsyanyong/${OPEN_OCR_INSTANCE}
+    image: fsyanyong/${OPEN_OCR_INSTANCE:-open-ocr-2}
     volumes:
       - ./scripts/:/opt/open-ocr/
     dns: ["114.114.114.114"]
@@ -33,7 +33,7 @@ services:
 
   # Start http server
   openocr:
-    image: fsyanyong/${OPEN_OCR_INSTANCE}
+    image: fsyanyong/${OPEN_OCR_INSTANCE:-open-ocr-2}
     volumes:
       - ./scripts/:/opt/open-ocr/
     ports:
