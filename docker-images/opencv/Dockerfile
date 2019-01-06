@@ -4,7 +4,7 @@ RUN apt-get update
 
 RUN apt-get install -y build-essential
 RUN apt-get install -y cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
-RUN apt-get install -y python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+RUN apt-get install -y libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
 
 RUN mkdir ~/opencv && cd ~/opencv && \
 git clone https://github.com/Itseez/opencv.git && \
@@ -16,4 +16,7 @@ make -j5 && \
 make install
 
 RUN apt-get install -y tesseract-ocr libtesseract-dev libleptonica-dev
-RUN pip install pytesseract xlsxwriter pdf2image
+
+RUN apt-get install -y python-dev python-pip
+
+RUN pip install numpy pytesseract xlsxwriter pdf2image
