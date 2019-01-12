@@ -23,11 +23,11 @@ make install && \
 ldconfig && \
 cd ~ && rm -rf opencv opencv_contrib
 
-RUN apt-get install -y tesseract-ocr libtesseract-dev libleptonica-dev
-RUN apt-get install -y bc imagemagick
+#RUN apt-get install -y tesseract-ocr libtesseract-dev libleptonica-dev
+#RUN apt-get install -y bc imagemagick
 
-RUN pip install pytesseract xlsxwriter pdf2image
+#RUN pip install pytesseract xlsxwriter pdf2image
 
-RUN cd ~ && \
-git clone https://github.com/brian-yang/table-parser-opencv.git
+#RUN cd ~ && \
+#git clone https://github.com/brian-yang/table-parser-opencv.git
 
